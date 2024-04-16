@@ -1,0 +1,59 @@
+@startuml
+class Celular implements Servicio, Cargable, Encendible {
+    - Modelo modelo
+    - boolean encendido
+    - Servicio servicio
+
+    + encender()
+    + apagar()
+    + llamar()
+    + recibir()
+    + finalizar()
+    + cargar()
+    + descargar()
+}
+
+abstract class Modelo {
+    + abstract getNombre()
+    + abstract getMarca()
+    + abstract getBateria()
+    + abstract getDescarga()
+}
+
+class MotorolaG5 extends Modelo {}
+
+class iPhone extends Modelo {}
+
+interface Servicio {
+    + llamar()
+    + recibir()
+}
+
+interface Cargable {
+    + cargar()
+    + descargar()
+}
+
+interface Encendible {
+    + encender()
+    + apagar()
+}
+
+class Persona {
+    - String nombre
+    - Celular celular
+
+    + getNombre()
+    + getCelular()
+}
+
+
+' relaciones
+Celular o-- Modelo : agregación
+
+' Modelo <|-- MotorolaG5
+' Modelo <|-- iPhone
+
+Persona o-- Celular : agregación
+
+@enduml

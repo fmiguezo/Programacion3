@@ -1,0 +1,55 @@
+int main () {
+
+
+    categorias.Empleado emp = new categorias.Empleado();
+
+    bonos.BonoResultado br = new bonos.BonoResultado();
+    bonos.BonoPresentismo bp = new bonos.BonoPresentismo();
+
+
+    emp.setBonoResultado(br);
+    emp.setBonoPresentismo(bp);
+
+    .....
+
+    print emp.getSueldo();
+
+}
+
+class categorias.Empleado() {
+
+   private categorias.CategoriaEmpleado categoria
+   private bonos.Bono bonoResultado
+   private bonos.Bono bonoPresentismo
+
+   private bonos.Bono[] bonos
+
+   private int cantidadDeFaltas
+   private int porcentajeCumplimiento
+
+
+   public bonos.Bono getBonoResultado() {
+        this.bonoResultado.setPorcentajeCumplimiento(this.porcentajeCumplimiento);
+        return this.bonoResultado;
+   }
+
+
+
+}
+
+class calculador.CalculadorSueldo {
+
+    Double getSueldo(categorias.Empleado emp) {
+        return
+            emp.getBonoResultado().calcularBono() +
+            emp.getBonoPresentismo().calcularBono() +
+
+            for (int i= 0; i men emp.getBonos().length; i++) {
+                sumaBOnos += emp.getBonos[i].calcularBono();
+            }
+
+            emp.getCategoria().getSueldo();
+    }
+
+
+}
