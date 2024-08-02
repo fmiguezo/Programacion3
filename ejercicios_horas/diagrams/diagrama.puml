@@ -1,0 +1,26 @@
+@startuml
+
+class Aeropuerto {
+    - nombre: String
+    - horaLocal: DateTime
+    - zonaHoraria: String
+    - destinos: List<Destino>
+
+    + notificarDestinos() : void
+}
+
+interface Destino {
+    + obtenerHoraLocal(): DateTime
+}
+
+class DestinoConcreto implements Destino {
+    - nombre: String
+    - zonaHoraria: String
+
+    + obtenerHoraLocal(): DateTime
+}
+
+' relaciones
+Aeropuerto o-r-> Destino
+
+@enduml

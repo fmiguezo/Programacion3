@@ -1,2 +1,4 @@
-package org.example;public class PersonaLeag {
+package org.example;
+
+public class PersonaLeaf extends Persona {
 }

@@ -1,27 +1,35 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+class IdentitySystem {
+    - HashMap<id: String, Person> persons
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+    + addIdentity(id: String, person: Person): void
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class PersonIdentity {
+    + getInfo(id: String): Person
 }
+
+class Person {
+    - name: String
+    - lastName: String
+    - birthDate: Date
+
+    + getName(): String
+    + getLastName(): String
+    + getBirthDate(): Date
+}
+
+class BankSystem {
+    + calculateAge(person: Person): int
+    + checkOfferedLoan(person: Person): String
+}
+
+' relaciones
+
+PersonIdentity "1" --> "0..*" Person
+Person "1" --> "1" BankSystem
+IdentitySystem "1" --> "n" PersonIdentity
 
 @enduml

@@ -1,27 +1,91 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+skinparam Linetype ortho
+title "Ejercicio 31"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+class Promocion implements IArticulo {
+    - nombre: String
+    - cantidad: Map<Articulo, Integer>
+    - porcentaje: Double
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
+    + Promocion(porcentaje: Double)
+    + agregarArticulo(articulo: Articulo, cantidad: Integer): void
 
-class ArrayList {
-Object[] elementData
-size()
+    + getters_setters()
+    + calcularPrecio(): Double
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+note bottom of Promocion
+    public double calcularPrecio() {
+        double precio = 0;
+        for (Map.Entry<Articulo, Integer> entry : cantidad.entrySet()) {
+            precio += entry.getKey().calcularPrecio() * entry.getValue();
+        }
+        return precio * (1 - porcentaje);
+    }
+
+    //
+    entry: Articulo, Map.Entry => obtiene la clave y el valor de un Map.
+    cantidad.entrySet() => devuelve un conjunto de pares clave-valor.
+    entry.getKey() => obtiene la clave del par.
+    entry.getValue() => obtiene el valor del par.
+
+    precio += entry.getKey().calcularPrecio() * entry.getValue() =>
+    suma el precio del artículo por la cantidad.
+
+    return precio * (1 - porcentaje) => devuelve el precio total con el descuento.
+end note
+
+class Articulo implements IArticulo {
+    - nombre: String
+    - codigo: String
+    - costo: Double
+
+    + getters_setters()
+    + calcularPrecio(): Double
 }
 
+note bottom of Articulo
+    public double calcularPrecio() {
+        return costo;
+    }
+end note
+
+interface IArticulo {
+    + calcularPrecio(): Double
+}
+
+class ListaDePrecios {
+    - nombre: String
+    - fechaInicio: Date
+    - List<IArticulo> articulos
+
+    + getters_setters()
+    + calcularPrecios(): Map<IArticulo, Double>
+}
+
+note top of ListaDePrecios
+    En este ejercicio usamos una versión modificada del patrón Composite.
+    Decimos que es modificada porque Promocion tiene que multiplicar
+    el costo calculado por Articulo y el precio final segun el % de descuento.
+end note
+
+note left of ListaDePrecios::calcularPrecios
+    public Map<IArticulo, Double> calcularPrecios() {
+        Map<IArticulo, Double> precios = new HashMap<>();
+        for (IArticulo articulo : articulos) {
+            precios.put(articulo, articulo.calcularPrecio());
+        }
+        return precios;
+    }
+
+    // HashMap => implementa la interfaz Map.
+    // put(articulo, articulo.calcularPrecio()) => agrega el artículo y su precio al Map.
+end note
+
+' relaciones
+Promocion o-- Articulo
+ListaDePrecios o-- IArticulo
+Articulo -[hidden]l- Promocion
 @enduml

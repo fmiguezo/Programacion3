@@ -2,6 +2,12 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Singleton instance = Singleton.getInstance();
+
+        instance.setNumber(7);
+        instance.setString("Hello World!");
+        instance.addStringToList("First element");
+
+        System.out.println(instance.getNumber() + " - " + instance.getString());
     }
 }

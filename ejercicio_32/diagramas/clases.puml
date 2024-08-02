@@ -1,27 +1,65 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+skinparam Linetype ortho
+title "Ejercicio 32"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+abstract class Persona {
+    - nombre: String
+    - apellido: String
+    - anioNac: int
+    - id: String
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+    + generarId(): String
+    + imprimirDatos(): void
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+note right of Persona::generarId
+    Genera un id único para la persona.
+
+    public String generarId() {
+        this.id = String.valueOf(anioNac).substring(2) + nombre.charAt(0) + apellido.charAt(0);
+    }
+end note
+
+class PersonaComposite extends Persona {
+    - hijos: List<Persona>
+
+    + agregarHijo(Persona): void
+    + imprimirDatos(): void
 }
+
+note bottom of PersonaComposite
+    Imprime los datos de la persona y sus hijos.
+
+    public void imprimirDatos() {
+        super.imprimirDatos();
+        for (Persona hijo : hijos) {
+            hijo.imprimirDatos();
+        }
+    }
+end note
+
+class PersonaLeaf extends Persona {
+    + imprimirDatos(): void
+}
+
+class ArbolGenealogico {
+    - raiz: PersonaComposite
+
+    + imprimirArbol(): void
+}
+
+note top of ArbolGenealogico
+    Imprime el árbol genealógico.
+
+    public void imprimirArbol() {
+        raiz.imprimirDatos();
+    }
+end note
+
+' relaciones
+PersonaComposite o-r- PersonaLeaf
+PersonaComposite o-u- ArbolGenealogico
 
 @enduml

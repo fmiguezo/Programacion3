@@ -1,4 +1,4 @@
 package org.example;
 
-public class TortaDeLaMuerte {
+public class TortaDeLaMuerte extends Postre {
 }

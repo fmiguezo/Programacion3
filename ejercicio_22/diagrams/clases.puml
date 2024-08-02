@@ -1,27 +1,54 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+skinparam Linetype ortho
+title "Diagrama de clases - Ejercicio 22"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+class Escrito implements Document {
+    - legajo : int
+    - erogacion : Date
+    - cuerpo : String
+    - autor : String
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
+    '+ constructor (legajo : int, erogacion : Date, cuerpo : String, autor : String)
 
-class ArrayList {
-Object[] elementData
-size()
+    + getters y setters()
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class Documento implements Document {
+    - expediente : int
+    - lanzamiento : Date
+    - contenido : String
+    - nombre : String
+
+    '+ constructor (expediente : int, lanzamiento : Date, contenido : String, nombre : String)
+
+    + getters y setters()
 }
+
+class Ley implements Document {
+    - folio : int
+    - emision : Date
+    - desarrollo : String
+    - firmante : String
+
+    '+ constructor (folio : int, emision : Date, desarrollo : String, firmante : String)
+
+    + getters y setters()
+}
+
+interface Document {
+    + getId() : int
+    + getIssueDate() : Date
+    + getBody() : String
+    + getResponsible() : String
+}
+
+class Verificador {
+    + verificar(ArrayList<Document> docs)
+}
+
+' relaciones
+Verificador "1" ..> "0..*" Document
 
 @enduml

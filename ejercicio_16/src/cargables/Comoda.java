@@ -21,4 +21,9 @@ public class Comoda implements ICargable {
     public TipoItem getTipo() {
         return TipoItem.COMODA;
     }
+
+    @Override
+    public String toString() {
+        return "Comoda";
+    }
 }

@@ -1,2 +1,3 @@
-package PACKAGE_NAME;public class Sensor {
+public interface Sensor {
+    public String getTipo();
 }

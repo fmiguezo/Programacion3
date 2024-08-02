@@ -1,6 +1,6 @@
 import java.util.Map;
 
-public class ImporesoraLista {
+public class ImpresoraLista {
 
     public static void imprimirLista(ListaPrecios lista) {
         System.out.println("Lista de precios: " + lista.getNombre());

@@ -1,6 +1,6 @@
 import org.jetbrains.annotations.NotNull;
 
-public class Celular implements ServicioTelefonico, Encendible, Cargable{
+public class Celular implements ServicioTelefonico, Encendible, Cargable {
     // Atributos
     protected Modelo modelo;
     protected boolean encendido;
@@ -53,18 +53,19 @@ public class Celular implements ServicioTelefonico, Encendible, Cargable{
 
     @Override
     public void llamar(@NotNull Persona receptor) {
-        if (receptor.getCelular() != null) {
+        try {
             if (this.encendido && receptor.getCelular().isEncendido() && this.bateria > 0) {
                 System.out.println("Llamando a " + receptor.getNombre() + "...");
                 receptor.getCelular().recibir();
                 descargar();
-            } else if (this.encendido && !(receptor.getCelular().isEncendido())) {
+            } else if (this.encendido && !(receptor.getCelular().isEncendido()) && this.bateria > 0) {
                 System.out.println("No se puede establecer llamada.");
             } else {
                 System.out.println("Celular sin bateria.");
             }
-        } else {
-            System.out.println(receptor.getNombre() +  " no tiene celular.");
+        }
+        catch (NullPointerException e) {
+            System.out.println("No se puede realizar la llamada. " + receptor.getNombre() +  " no tiene celular.");
         }
     }
 
@@ -79,14 +80,18 @@ public class Celular implements ServicioTelefonico, Encendible, Cargable{
     }
 
     @Override
-    public void finalizar(@NotNull Persona finalizado, @NotNull Persona finalizador) {
-        System.out.println("Finalizando llamada...");
-        System.out.println("Nivel de bateria actual es de " + this.bateria + " puntos.");
-        if (finalizado.getCelular().isEncendido()) {
-            System.out.println("El celular de " + finalizado.getNombre() + " sigue encendido.");
-        } else {
-            System.out.println("El celular de " + finalizado.getNombre() + " está apagado.");
+    public void finalizar(@NotNull Persona finalizado, Persona finalizador) {
+        try {
+            if (finalizado.getCelular().isEncendido()) {
+                System.out.println("El celular de " + finalizado.getNombre() + " sigue encendido.");
+            } else {
+                System.out.println("El celular de " + finalizado.getNombre() + " está apagado.");
+            }
+            System.out.println("Finalizando llamada...");
+            System.out.println("Nivel de bateria actual es de " + this.bateria + " puntos.");
+            this.cargar();
+        } catch (NullPointerException e) {
+            System.out.println("No se realizó la llamada. " + finalizado.getNombre() + " no tiene celular.");
         }
-        this.cargar();
     }
 }

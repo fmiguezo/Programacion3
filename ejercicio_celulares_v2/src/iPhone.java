@@ -1,15 +1,4 @@
-public class iPhone extends Modelo {
-
-    @Override
-    public String getNombre() {
-        return "iPhone 11 Pro Max";
-    }
-
-    @Override
-    public String getMarca() {
-        return "iPhone";
-    }
-
+public class iPhone implements Modelo {
     @Override
     public Double getBateria() {
         return 5.0;

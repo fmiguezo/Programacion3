@@ -1,8 +1,8 @@
 @startuml
-class Celular implements Servicio, Cargable, Encendible {
+class Celular implements ServicioTelefonico, Cargable, Encendible {
     - Modelo modelo
     - boolean encendido
-    - Servicio servicio
+    - Double bateria
 
     + encender()
     + apagar()
@@ -13,20 +13,27 @@ class Celular implements Servicio, Cargable, Encendible {
     + descargar()
 }
 
-abstract class Modelo {
-    + abstract getNombre()
-    + abstract getMarca()
-    + abstract getBateria()
-    + abstract getDescarga()
+interface Modelo {
+    + getBateria()
+    + getDescarga()
 }
 
-class MotorolaG5 extends Modelo {}
+class MotorolaG5 implements Modelo {
+    + getBateria()
+    + getDescarga()
+}
 
-class iPhone extends Modelo {}
+class iPhone implements Modelo {
+    + getBateria()
+    + getDescarga()
+}
 
-interface Servicio {
+
+
+interface ServicioTelefonico {
     + llamar()
     + recibir()
+    + finalizar()
 }
 
 interface Cargable {
@@ -45,15 +52,17 @@ class Persona {
 
     + getNombre()
     + getCelular()
+    + llamar()
+    + recibirLlamada()
+    + finalizarLlamada()
 }
 
 
 ' relaciones
-Celular o-- Modelo : agregación
+Celular o-- Modelo : composición
 
 ' Modelo <|-- MotorolaG5
 ' Modelo <|-- iPhone
 
 Persona o-- Celular : agregación
-
 @enduml

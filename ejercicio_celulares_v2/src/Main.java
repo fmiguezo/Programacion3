@@ -10,19 +10,19 @@ public class Main {
         Celular celuCata = new Celular(iphone);
 
         juliana.setCelular(celuJuli);
-        catalina.setCelular(celuCata);
+        //catalina.setCelular(celuCata);
 
-        juliana.getCelular().encender();
-        catalina.getCelular().encender();
-        System.out.println(catalina.getCelular().isEncendido());
-        System.out.println(juliana.getCelular().getBateria());
+        juliana.encenderCelular();
+        catalina.encenderCelular();
+        catalina.getEstadoCelular();
+        juliana.getBateriaCelular();
 
         juliana.llamar(catalina);
         juliana.finalizarLlamada(catalina);
-        System.out.println(catalina.getCelular().getBateria());
+        catalina.getBateriaCelular();
 
-        catalina.llamar(juliana);
-        catalina.finalizarLlamada(juliana);
+        //catalina.llamar(juliana);
+        //catalina.finalizarLlamada(juliana);
 
     }
 }

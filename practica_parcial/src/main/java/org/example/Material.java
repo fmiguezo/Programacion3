@@ -1,2 +1,5 @@
-package org.example;public enum Material {
+package org.example;
+
+public enum Material {
+    MADERA, METAL, PLASTICO
 }

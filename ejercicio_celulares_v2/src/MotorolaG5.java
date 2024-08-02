@@ -1,15 +1,4 @@
-public class MotorolaG5 extends Modelo {
-
-    @Override
-    public String getNombre() {
-        return "Moto G5";
-    }
-
-    @Override
-    public String getMarca() {
-        return "Motorola";
-    }
-
+public class MotorolaG5 implements Modelo {
     @Override
     public Double getBateria() {
         return 5.0;

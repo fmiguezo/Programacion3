@@ -1,6 +1,6 @@
 package org.example;
 
-public class ComensalBase implements IComensal {
+public class Comensal implements IComensal {
     private IComensal next;
     private Plato plato;
 
@@ -17,8 +17,10 @@ public class ComensalBase implements IComensal {
     public void agarrarPlato(Plato plato) {
         if (this.puedeAgarrarPlato(plato)) {
             System.out.println("El comensal agarró el plato " + plato.getNombre());
-        } else {
+        } else if (this.next != null) {
             this.next.agarrarPlato(plato);
+        } else {
+            System.out.println("¡Este plato no es de ningún comensal!");
         }
     }
 }

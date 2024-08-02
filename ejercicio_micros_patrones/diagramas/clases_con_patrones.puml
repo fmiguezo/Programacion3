@@ -1,27 +1,50 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+'skinparam Linetype ortho
+skin rose
+title "Ejercicio Micros versión Patrones"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+class Persona {
+    - abordarMicroEstrategia
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+    + subirAlMicro()
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+interface IAbordarMicro {
+    - abordarMicroEstrategia(m: Micro, p: Persona)
+    + subirAlMicro()
 }
+
+class Apurado implements IAbordarMicro {}
+class Obsecuente implements IAbordarMicro {}
+class Moderado implements IAbordarMicro {}
+class Fiaca implements IAbordarMicro {}
+
+class Micro {}
+class Persona {}
+class BuilderPersona {
+    + reset()
+    + build(): Persona
+    + setEstrategia()
+    + setNombre()
+    + setDni()
+    --
+    + build(): Persona
+}
+
+class Directora {
+    - builder: BuilderPersona
+    + constructor(b: BuilderPersona)
+    + construirEmpleadoApurado()
+    + construirEmpleadoObsecuente()
+    + construirEmpleadoModerado()
+    + construirEmpleadoFiaca()
+}
+
+' relaciones
+Persona *-r- IAbordarMicro
+BuilderPersona --> Persona
+Directora *-- BuilderPersona
 
 @enduml

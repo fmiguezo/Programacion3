@@ -1,27 +1,65 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+skinparam Linetype ortho
+title "Diagrama de clases - Películas"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+enum Orden {
+    ASC
+    DES
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class Pelicula {
+    - String titulo
+    - String descripcion
+    - LocalDate fechaDeEstreno
+    - String paisDeOrigen
+    - int visualizaciones
+
+    + visualizar()
+    + getters y setters()
+    + calcularAniosDesdeEstreno();
+    + verPuntaje()
 }
+
+class Cartelera {
+    - HashSet<Pelicula> peliculas
+
+    + agregarPelicula(Pelicula pelicula)
+    + quitarPelicula(Pelicula pelicula)
+    + obtenerMejorPuntuada()
+    + ordenarPorFecha(Orden orden)
+    + ordenarPorVisualizaciones(Orden orden)
+    + imprimirPeliculas()
+}
+
+class ComparadorVisualizaciones implements Comparator {
+    + comparar(Pelicula p1, Pelicula p2)
+}
+
+class ComparadorFecha implements Comparator{
+    + comparar(Pelicula p1, Pelicula p2)
+}
+
+class OrdenadorPeliculas {
+    + ordenarPorPuntaje(HashSet<Pelicula> peliculas, Orden orden)
+    + ordenarPorFecha(HashSet<Pelicula> peliculas, Orden orden)
+}
+
+class ImpresoraPeliculas {
+    + imprimirPeliculas(TreeSet<Pelicula> peliculas)
+    + imprimirPeliculasPorVisualizaciones(TreeSet<Pelicula> peliculas, Orden orden)
+    + imprimirPeliculasPorFecha(TreeSet<Pelicula> peliculas, Orden orden)
+}
+
+' relaciones
+Cartelera *.. Pelicula : contiene
+OrdenadorPeliculas o.. Pelicula : ordena
+ImpresoraPeliculas o.. Pelicula : imprime
+ComparadorVisualizaciones o.. Pelicula : compara
+ComparadorFecha o.. Pelicula : compara
+OrdenadorPeliculas o-- ComparadorVisualizaciones : usa
+OrdenadorPeliculas o-- ComparadorFecha : usa
+OrdenadorPeliculas o-- Orden : usa
 
 @enduml

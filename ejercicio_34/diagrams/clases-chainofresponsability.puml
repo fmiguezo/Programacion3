@@ -1,27 +1,107 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+skinparam Linetype ortho
+title "Ejercicio 34 - Chain of Responsability"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+class Banco {
+    - aprobadores: Aprobador[]
+    - solicitudes: Solicitud[]
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+    + agregarAprobador(aprobador : Aprobador): void
+    + agregarSolicitud(solicitud : Solicitud): void
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class Solicitud {
+    - monto: float
 }
+
+note top of Solicitud
+    Solicitud hace referencia a una solicitud de préstamo.
+end note
+
+interface IAprobador {
+    + setNext(aprobador : Aprobador): void
+    + aprobarSolicitud(solicitud : Solicitud): boolean
+}
+
+note top of IAprobador
+    IAprobador es la interface Handler.
+
+end note
+
+abstract class AprobadorBase implements IAprobador {
+    - next: Aprobador
+
+    + setNext(aprobador : Aprobador): void
+    - abstract puedeAprobar(solicitud : Solicitud): boolean
+    + aprobarSolicitud(solicitud : Solicitud): boolean
+}
+
+note top of AprobadorBase
+    AprobadorBase sería nuestro BaseHandler.
+end note
+
+note left of AprobadorBase::aprobarSolicitud
+    public boolean aprobarSolicitud(Solicitud solicitud) {
+        if (puedeAprobar(solicitud)) {
+            return true;
+        } else if (next != null) {
+            return next.aprobarSolicitud(solicitud);
+        }
+            return false;
+        }
+    }
+end note
+
+class Empleado extends AprobadorBase {
+    - montoMax : int
+
+    - puedeAprobar(solicitud : Solicitud): boolean
+}
+
+note left of Empleado::setNext
+    // se debería pasar Supervisor a esta función
+
+    public void setNext(Aprobador aprobador) {
+        this.next = aprobador;
+    }
+end note
+
+note bottom of Empleado
+    // estos métodos son iguales para todas las clases que heredan de
+    AprobadorBase, sólo cambia el monto y posiblemente otras condiciones
+    para ver si se aprueba o no, que no se mencionan en el enunciado
+
+    private boolean puedeAprobar(Solicitud solicitud) {
+        return solicitud.getMonto() <= montoMax;
+    }
+end note
+
+class Supervisor extends AprobadorBase {
+    - montoMax : int
+
+    - puedeAprobar(solicitud : Solicitud): boolean
+}
+
+note bottom of Supervisor
+    // se debería pasar Gerente a esta función
+
+    public void setNext(Aprobador aprobador) {
+        this.next = aprobador;
+    }
+end note
+
+class Gerente extends AprobadorBase {
+    - montoMax : int
+
+    - puedeAprobar(solicitud : Solicitud): boolean
+}
+
+'relaciones
+IAprobador <--o AprobadorBase
+Solicitud -l-> IAprobador
+Banco o-- IAprobador
+Banco o-- Solicitud
 
 @enduml

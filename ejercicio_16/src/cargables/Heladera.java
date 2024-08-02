@@ -21,4 +21,9 @@ public class Heladera implements ICargable {
     public TipoItem getTipo() {
         return TipoItem.HELADERA;
     }
+
+    @Override
+    public String toString() {
+        return "Heladera";
+    }
 }

@@ -1,27 +1,171 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+skinparam Linetype ortho
+title "Diagrama de clases - Centro Universitario"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+interface SistemaInscripcion {
+    + inscribirAlumno(Alumno alumno, Cursable cursable) : void
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+
+class CentroUniversitario implements SistemaInscripcion {
+    - ArrayList<Alumno> alumnos
+    - ArrayList<Cursable> cursables
+
+    + inscribirAlumno(Alumno alumno, Cursable cursable)
+    + getters_y_setters()
 }
 
+note left of CentroUniversitario::inscribirAlumno
+    public void inscribirAlumno(Alumno alumno, Cursable cursable) {
+        cursable.inscribir(alumno);
+    }
+end note
+
+class Alumno {
+    - nombre : String
+    - apellido : String
+    - legajo : int
+    - materiasAprobadas : ArrayList<Materia>
+    - materiasCursando : ArrayList<Materia>
+    - car : CAR
+    - esIngresante : boolean
+
+    + asignarCAR(materiasCursando : ArrayList<Materia>) : void
+    + pagar() : void
+    + getters_y_setters()
+}
+
+note left of Alumno::asignarCAR
+    public void asignarCAR(materiasCursando : ArrayList<Materia>) {
+        if (materiasCursando.size() < 1 && false == esIngresante) {
+            this.car = CAR.NO_REGULAR;
+        } else {
+            this.car = CAR.REGULAR;
+        }
+    }
+end note
+
+abstract class Cursable {
+    # nombre : String
+    # inscriptos : ArrayList<Alumno>
+
+    + inscribir(Alumno)
+    + getters_y_setters()
+}
+
+class Materia extends Cursable {
+    - codigo : int
+    - anioCarrera : int
+    - correlativas : ArrayList<Materia>
+
+    + inscribir(Alumno alumno)
+    + verificarCorrelativas(Alumno alumno) : boolean
+    + getters_y_setters()
+}
+
+note bottom
+    public void inscribir(Alumno alumno) {
+        if (alumno.getEsIngresante())
+            this.inscriptos.add(alumno);
+            alumno.getMateriaSCursando().add(this);
+        else {
+            if (alumno.getCar() == CAR.REGULAR && verificarCorrelativas(alumno) {
+                this.inscriptos.add(alumno);
+            } else {
+                throw new Exception("No cumple con las correlativas");
+            }
+        }
+    }
+end note
+
+note bottom
+    public boolean verificarCorrelativas(Alumno alumno) {
+    if (this.correlativas.size() > 0) {
+        for (Materia materia : this.correlativas) {
+            if (false == alumno.getMateriasAprobadas().contains(materia)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return true;
+end note
+
+interface Certificable {
+    + gestionarCertificado(TipoCertificado tipoCertificado)
+}
+
+
+interface Pagable {
+    + pagar() : void
+}
+
+class Curso extends Cursable implements Certificable, Pagable {
+    - cupo : int
+    - esPago : boolean
+
+    + inscribir(Alumno alumno)
+    + pagar()
+    + gestionarCertificado(TipoCertificado tipoCertificado)
+    + getters_y_setters()
+}
+
+note bottom
+    public void inscribir(Alumno alumno) {
+        if (this.cupo > 0 && this.inscriptos < this.cupo) {
+            this.pagar();
+            this.cupo--;
+            this.inscriptos.add(alumno);
+        } else {
+            throw new Exception("No hay cupo disponible");
+        }
+    }
+end note
+
+class Charla extends Cursable implements Certificable {
+    - cupo : int
+    - nombre : String
+    - fecha : Date
+    - hora : Time
+
+    + inscribir(Alumno alumno)
+    + gestionarCertificado(TipoCertificado tipoCertificado)
+    + getters_y_setters()
+}
+
+note bottom
+    public void inscribir(Alumno alumno) {
+        if (this.cupo > 0 && this.inscriptos < this.cupo) {
+            this.cupo--;
+            this.inscriptos.add(alumno);
+        } else {
+            throw new Exception("No hay cupo disponible");
+        }
+    }
+end note
+
+class CharlaVirtual extends Charla {
+    - link : String
+}
+
+class CharlaPresencial extends Charla {
+    - aula : String
+}
+
+enum TipoCertificado {
+    APROBACION
+    ASISTENCIA
+}
+
+enum CAR {
+    REGULAR
+    NO_REGULAR
+}
+
+' relaciones
+CentroUniversitario "1" o-- "0..*" Cursable
+Cursable "1" o-- "0..*" Alumno
+CentroUniversitario "1" o-r- "0..*" Alumno
 @enduml

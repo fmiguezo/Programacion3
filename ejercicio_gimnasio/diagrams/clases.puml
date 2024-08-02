@@ -1,27 +1,141 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+title "Ejercicio Gimnasio"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+class Gimnasio {
+    - actividades: ArrayList<Actividad>
+    - socios: ArrayList<Socio>
+    - promociones: ArrayList<Promocion>
+    - promocionDelMes: Promocion
+    - cuotasSocios: Map<Socio, float>
+    - calcDesc: CalculadorDescuento
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+    + agregarPromocion(promocion: Promocion): void
+    + eliminarPromocion(promocion: Promocion): void
+    + setPromocionDelMes(promocion: Promocion): void
+    + calcularCuotas() : void
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+note right of Gimnasio::setPromocionDelMes
+    promocionDelMes = promocion;
+    notificar();
+end note
+
+note left of Gimnasio::setPromocionDelMes
+    private void notificar(){
+        calcDesc.setPromo(promocion: Promocion)
+    }
+end note
+
+note left of Gimnasio::calcularCuotas
+    for (Socio socio : socios) {
+        cuotasSocios.put(socio, socio.getCuota().calcular());
+    }
+end note
+
+abstract class TipoCuota {
+    # socio: Socio
+
+    + calcular(): float
 }
+
+class CuotaPaseLibre extends TipoCuota {
+    - precio: float
+    + calcular(): float
+}
+
+note right of CuotaPaseLibre::calcularCuota
+    return precio
+end note
+
+class CuotaActividades extends TipoCuota {
+    + calcular(): float
+    + obtenerDesc() : float
+}
+
+note right of CuotaActividades::calcular
+    int cuota = 0;
+    for (Actividad actividad : socio.getActividades())
+        cuota += actividad.precio
+    }
+    return cuota -= cuota * obtenerDesc();
+end note
+
+note right of CuotaActividades::obtenerDesc
+    int totalAct = CalculadorDescuento.getTotalActEnPromo(socio);
+    float desc = CalculadorDescuento.obtenerPctDescuento(totalAct);
+    return desc;
+end note
+
+
+class CalculadorDescuento extends TipoCuota {
+    - promocion: Promocion
+
+    + static getTotalActEnPromo(socio: Socio): int
+    + static obtenerPctDescuento(totalAct : int): float
+    + setPromo(promocion: Promocion)
+}
+
+note right of CalculadorDescuento::getTotalActEnPromo
+    actividadesPromo = promocion.getActividades();
+    Set<String> setActividades = new LinkedHashSet<>(actividadesPromo);
+    setActividades.retainAll(socio.getActividades());
+    return setActividades.size();
+end note
+
+note right of CalculadorDescuento::obtenerPctDescuento
+    if (totalAct >= 2) {
+        return pctDescuento;
+    } else {
+        return 0;
+    }
+end note
+
+class Promocion {
+    - nombre: String
+    - actividades: ArrayList<Actividad>
+    - pctDescuento: float
+
+    +getters_y_setters()
+}
+
+class Actividad {
+    - nombre: String
+    - descripcion: String
+    - float: precio
+    - instructor: String
+    - dias: ArrayList<String>
+    - horarios: ArrayList<String>
+
+    + getters_y_setters()
+}
+
+class Socio {
+    - nombre: String
+    - apellido: String
+    - dni: String
+    - direccion: String
+    - telefono: String
+    - email: String
+    - tipoCuota: Cuota
+    - actividades: ArrayList<Actividad>
+
+    + agregarActividad(actividad: Actividad): void
+    + eliminarActividad(actividad: Actividad): void
+
+    + getters_y_setters()
+}
+
+' relaciones
+
+Socio o-- TipoCuota
+Socio <-- Actividad
+Promocion <-- Actividad
+Gimnasio o-- Actividad
+Gimnasio o-- Socio
+Gimnasio o-- Promocion
+Gimnasio o-- CalculadorDescuento
+CuotaActividades <-- CalculadorDescuento
 
 @enduml

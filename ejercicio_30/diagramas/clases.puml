@@ -1,4 +1,4 @@
-@startuml
+'@startuml
 'https://plantuml.com/class-diagram
 
 skinparam Linetype ortho
@@ -55,11 +55,17 @@ class PiononoGangrenosoBuilders implements PostreBuilder {
     + getPostre() : PiononoGangrenoso
 }
 
-class TortaDeLaMuerte {}
+class TortaDeLaMuerte  {}
 
 class BudinDiabolico {}
 
 class PiononoGangrenoso {}
+
+'class Postre {
+'    - ingrediente1 : String
+'    - ingrediente2 : String
+'    - ingrediente3 : String
+'}
 
 ' relaciones
 
@@ -67,4 +73,6 @@ TortaDeLaMuerteBuilder --> TortaDeLaMuerte
 BudinDiabolicoBuilder --> BudinDiabolico
 PiononoGangrenosoBuilders --> PiononoGangrenoso
 PasteleroDelHorror -l-> PostreBuilder
-@enduml
+
+
+@enduml'

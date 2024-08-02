@@ -1,27 +1,56 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+class Robot {
+    - String numeroSerie
+    - int potenciaTraccionBase
+    - int potenciaTraccionFinal
+    - Traccion traccion
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+    + constructor(String numeroSerie, int potenciaTraccionBase, Traccion traccion);
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+    + String getNumeroSerie();
+    + int getPotenciaTraccionBase();
+    + int getPotenciaTraccionFinal();
+    + int getDistanciaMaxima();
+    + String getTipoTraccion();
+    + toString();
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+interface Traccion {
+    + int restarPotencia();
+    + int getDistanciaMaxima();
+    + int getTipo();
 }
+
+class Oruga implements Traccion {
+    - SensorTemperatura mekeM0;
+
+    + int restarPotencia();
+    + int getDistanciaMaxima();
+    + int getTipo();
+    + getSensor();
+    + String getTemperatura();
+}
+
+class RuedaDeCaucho implements Traccion {
+    + int restarPotencia();
+    + int getDistanciaMaxima();
+    + int getTipo();
+    + String getSensor();
+}
+
+interface Sensor {
+    + String getTipo();
+}
+
+class SensorTemperatura implements Sensor {
+    + String getTipo();
+    + double getTemperatura();
+}
+
+' relaciones
+Robot "1" *-- "1" Traccion : composición
+Oruga "1" *-- "1" SensorTemperatura : composición
 
 @enduml

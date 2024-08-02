@@ -1,27 +1,80 @@
 @startuml
 'https://plantuml.com/class-diagram
+skinparam Linetype ortho
+title "Ejercicio Centro Médico"
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+abstract class BaseSanitaria {
+    # nombre : String
+    # direccion : String
+    # tiempoMedioAsistencia : float
+    # personal : PersonalSanitario[]
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+    + getNombre() : String
+    + getDireccion() : String
+    + getTiempoMedioAsistencia() : float
+    + obtenerCantAmbulancias() : int
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+note top of BaseSanitaria
+En este ejercicio se puede usar Composite para las Bases Sanitarias y
+Strategy para el cálculo del tiempo medio de asistencia y cantidad de ambulancias
+end note
+
+note left of BaseSanitaria::obtenerCantAmbulancias
+    return 0;
+end note
+
+note left of BaseSanitaria::getTiempoMedioAsistencia
+    return tiempoMedioAsistencia;
+end note
+
+class Hospital extends BaseSanitaria {
+    # ambulancias : Ambulancia[]
+
+    + agregarAmbulancia(ambulancia : Ambulancia) : void
+    + quitarAmbulancia(ambulancia : Ambulancia) : void
+    + obtenerCantAmbulancias() : int
 }
+
+note left of Hospital::obtenerCantAmbulancias
+    return ambulancias.size();
+end note
+
+class UnidadAtencionPrimaria extends BaseSanitaria {}
+
+class UnidadAdministrativa extends BaseSanitaria {
+    - basesSanitarias : BaseSanitaria[]
+
+    + obtenerCantAmbulancias() : int
+    + getTiempoMedioAsistencia() : float
+    + agregarBaseSanitaria(base : BaseSanitaria) : void
+    + quitarBaseSanitaria(base : BaseSanitaria) : void
+}
+
+note right of UnidadAdministrativa::obtenerCantAmbulancias
+    int total = 0;
+    for (BaseSanitaria base : basesSanitarias) {
+        total += base.obtenerCantAmbulancias();
+    }
+    return total;
+
+    // return basesSanitarias.stream().mapToInt(BaseSanitaria::obtenerCantAmbulancias).sum();
+end note
+
+note right of UnidadAdministrativa::getTiempoMedioAsistencia
+    float total = 0;
+    for (BaseSanitaria base : basesSanitarias) {
+        total += base.getTiempoMedioAsistencia();
+    }
+    return total / basesSanitarias.size();
+
+    // return basesSanitarias.stream().mapToDouble(BaseSanitaria::getTiempoMedioAsistencia).sum();
+end note
+
+class Ambulancia {}
+
+' relaciones
+BaseSanitaria o-r- Ambulancia
+UnidadAdministrativa o-- BaseSanitaria
 
 @enduml

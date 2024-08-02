@@ -6,5 +6,5 @@ public enum TipoItem {
     HELADERA,
     LAVARROPAS,
     TELEVISOR,
-    CAJA
+    CAJA;;
 }

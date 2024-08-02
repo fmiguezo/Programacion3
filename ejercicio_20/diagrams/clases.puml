@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam Linetype ortho
+
+title "Diagrama de clases - Ejercicio 20"
+
+class Articulo {
+    - String nombre
+    - double costo
+    - String observacion
+
+    + constructor(String nombre, double costo)
+
+    + getters y setters()
+}
+
+class ListaPrecios {
+    - String nombre
+    - Date fechaVigencia
+    - TipoLista tipo
+    - TreeMap<Articulo, double> precios
+
+    + constructor(String nombre, Date fechaVigencia, TipoLista tipo)
+
+    + void agregarArticulo(Articulo articulo)
+    - void calcularPrecio(Articulo articulo, TipoLista tipo)
+    + void validarPrecios()
+    + getters y setters()
+}
+
+enum TipoLista {
+    MAYORISTA
+    MINORISTA
+}
+
+class ComparadorCostos implements Comparator {
+    + int compare(Articulo a1, Articulo a2)
+}
+
+class CalculadoraPrecios {
+    + double calcularPrecio(Articulo articulo, ListaPrecios lista)
+    + validarPrecios(TreeMap<Articulo, double> precios)
+}
+
+class ImpresoraLista {
+    + void imprimirLista(ListaPrecios lista)
+}
+
+' relaciones
+Articulo o-- ListaPrecios : "tiene"
+TipoLista o-- ListaPrecios : "es de tipo"
+CalculadoraPrecios o.. ListaPrecios : "calcula"
+ComparadorCostos o.. ListaPrecios : "ordena"
+ImpresoraLista o.. ListaPrecios : "imprime"
+
+@enduml

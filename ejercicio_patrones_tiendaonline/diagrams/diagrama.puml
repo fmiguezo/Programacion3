@@ -1,0 +1,160 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam Linetype ortho
+title "Diagrama de clases - Tienda online"
+
+package AbstractFactory {
+    interface Product {
+        + getPrice(): number
+    }
+
+    interface Webcam implements Product {
+    }
+
+    interface Headset implements Product {
+    }
+
+    abstract class Kit implements Product {
+        - keyboard: Keyboard
+        - mouse: Mouse
+    }
+
+    interface Keyboard {
+    }
+
+    interface Mouse {
+    }
+
+    class PlatinumWebcam implements Webcam {
+    }
+
+    class PlatinumHeadset implements Headset {
+    }
+
+    class PlatinumKit extends Kit {
+    }
+
+    class PlatinumKeyboard implements Keyboard {
+    }
+
+    class PlatinumMouse implements Mouse {
+    }
+
+    class GoldWebcam implements Webcam {
+    }
+
+    class GoldHeadset implements Headset {
+    }
+
+    class GoldKit implements Kit {
+    }
+
+    class GoldKeyboard implements Keyboard {
+    }
+
+    class GoldMouse implements Mouse {
+    }
+
+    class StarterWebcam implements Webcam {
+    }
+
+    class StarterHeadset implements Headset {
+    }
+
+    class StarterKit implements Kit {
+    }
+
+    class StarterKeyboard implements Keyboard {
+    }
+
+    class StarterMouse implements Mouse {
+    }
+}
+
+class OnlineShop {
+    - factory: PeriphericalsFactory
+    - products: ArrayList<Product>
+
+    + OnlineShop(factory: PeriphericalsFactory)
+    + createFullKit(): ArrayList<Product>
+    + sellFullKit(): ArrayList<Product>
+    + sellWebcam(): Webcam
+    + sellHeadset(): Headset
+    + sellKit(): Kit
+    + setFactory(factory: PeriphericalsFactory): void
+}
+
+
+
+interface PeriphericalsFactory {
+    + createWebcam(): Webcam
+    + createHeadset(): Headset
+    + createKit(): Kit
+    - createKeyboard(): Keyboard
+    - createMouse(): Mouse
+}
+
+class PlatinumFactory implements PeriphericalsFactory {
+    + createWebcam(): Webcam
+    + createHeadset(): Headset
+    + createKit(): Kit
+    - createKeyboard(): Keyboard
+    - createMouse(): Mouse
+}
+
+class GoldFactory implements PeriphericalsFactory {
+    + createWebcam(): Webcam
+    + createHeadset(): Headset
+    + createKit(): Kit
+    - createKeyboard(): Keyboard
+    - createMouse(): Mouse
+}
+class StarterFactory implements PeriphericalsFactory {
+    + createWebcam(): Webcam
+    + createHeadset(): Headset
+    + createKit(): Kit
+    - createKeyboard(): Keyboard
+    - createMouse(): Mouse
+}
+
+
+
+' relaciones
+
+PeriphericalsFactory o-up- OnlineShop
+
+'PlatinumWebcam <.up. PlatinumFactory
+'PlatinumHeadset <.up. PlatinumFactory
+'PlatinumKit <.up. PlatinumFactory
+
+'GoldHeadset <.up. GoldFactory
+'GoldWebcam <.up. GoldFactory
+'GoldKit <.up. GoldFactory
+
+'StarterHeadset <.up. StarterFactory
+'StarterWebcam <.up. StarterFactory
+'StarterKit <.up. StarterFactory
+
+Webcam -[hidden]up- PlatinumFactory
+Headset -[hidden]up- PlatinumFactory
+Kit -[hidden]up- PlatinumFactory
+
+Kit o-- Keyboard
+Kit o-- Mouse
+
+'PlatinumKeyboard <.. PlatinumKit
+'PlatinumMouse <.. PlatinumKit
+
+'GoldKeyboard <.. GoldKit
+'GoldMouse <.. GoldKit
+
+'StarterKeyboard <.. StarterKit
+'StarterMouse <.. StarterKit
+@enduml
+
+
+
+
+
+

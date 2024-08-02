@@ -1,0 +1,58 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class SistemaMontaje {
+    - ArrayList<IHerramientas> herramientas;
+
+    + agregarHerramienta();
+    + quitarHerramienta();
+    + int getPeso();
+    + String getHerramientas();
+}
+
+interface IHerramientas {
+    + int getPeso();
+    + String getNombre();
+}
+
+class SensorInfrarrojo implements IHerramientas {
+    - int peso;
+
+    + int getPeso();
+    + String getNombre();
+}
+
+class Taser implements IHerramientas {
+    - int peso;
+
+    + int getPeso();
+    + String getNombre();
+}
+
+class BrazoRobotico implements IHerramientas {
+    - int peso;
+
+    + int getPeso();
+    + String getNombre();
+}
+
+class Dron {
+    - double velocidad;
+    - double altura;
+    - SistemaMontaje sistemaMontaje;
+
+    + agregarHerramienta();
+    + quitarHerramienta();
+    + String getHerramientas();
+    + int getPesoHerramientas();
+    + double getVelocidadMaxima();
+    + double getAlturaMaxima();
+}
+
+' relaciones
+SistemaMontaje "1" *-u- "1" SensorInfrarrojo : agregacion
+SistemaMontaje "1" *-u- "1" Taser : agregacion
+SistemaMontaje "1" *-u- "1" BrazoRobotico : agregacion
+Dron "1" *-u- "1" SistemaMontaje : contiene
+
+@enduml

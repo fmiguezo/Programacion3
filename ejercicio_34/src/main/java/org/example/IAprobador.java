@@ -1,6 +1,6 @@
 package org.example;
 
-public interface Aprobador {
-    public void setNext(Aprobador aprobador);
+public interface IAprobador {
+    public void setNext(IAprobador aprobador);
     public boolean aprobarSolicitud(Solicitud solicitud);
 }

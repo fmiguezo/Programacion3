@@ -1,4 +1,4 @@
 package org.example;
 
-public class AireAcondicionadoImportado {
+public class AireAcondicionadoImportado extends AireAcondicionado {
 }

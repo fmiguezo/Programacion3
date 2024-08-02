@@ -1,27 +1,70 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+abstract class Navio {
+    - String nombre;
+    - double flotabilidad;
+    - double estabilidad;
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+    '+ constructor (String nombre, double flotabilidad, double estabilidad);
+    + String getNombre();
+    + double getFlotabilidad();
+    + double getEstabilidad();
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+abstract class NavioGuerra extends Navio {
+    - double solidez;
+    - double potenciaDeFuego;
+    - double velocidadCrucero;
+
+    '+ constructor (String nombre, double flotabilidad, double estabilidad, double solidez, double potenciaDeFuego, double velocidadCrucero);
+
+    + double getSolidez();
+    + double getPotenciaDeFuego();
+    + double getVelocidadCrucero();
 }
+
+
+class Acorazado extends NavioGuerra {
+    - double blindaje;
+
+    '+ constructor (String nombre, double flotabilidad, double estabilidad, double solidez, double potenciaDeFuego, double velocidadCrucero, double blindaje);
+    + double getBlindaje();
+}
+
+class Destructor extends NavioGuerra {
+    - double maniobrabilidad;
+
+    '+ constructor (String nombre, double flotabilidad, double estabilidad, double solidez, double potenciaDeFuego, double velocidadCrucero, double maniobrabilidad);
+    + double getManiobrabilidad();
+
+}
+
+class BarcoHospital extends Navio {
+    - int capacidadDeCarga;
+
+    '+ constructor (String nombre, double flotabilidad, double estabilidad, double capacidadDeCarga);
+    + int getCapacidadDeCarga();
+}
+
+class Lancha extends Navio {
+    - double maniobrabilidad;
+    - Grua grua;
+
+    '+ constructor (String nombre, double flotabilidad, double estabilidad, double maniobrabilidad, Grua grua);
+    + double getManiobrabilidad();
+    + arriar(Object carga);
+}
+
+class Grua {
+    - double capacidadDeArriaje;
+
+    '+ constructor (double capacidadDeArriaje);
+    + double getCapacidadDeArriaje();
+    + arriar(Object carga);
+}
+
+' relaciones
+Lancha "1" -- "1" Grua : contiene
 
 @enduml

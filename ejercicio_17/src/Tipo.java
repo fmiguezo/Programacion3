@@ -1,2 +1,6 @@
-package PACKAGE_NAME;public class Tipo {
+enum Tipo {
+    SIMPLE,
+    CONTENEDOR,
+    CONTENIDO,
+    SAMBUCHITO;
 }

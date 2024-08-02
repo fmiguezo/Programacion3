@@ -22,6 +22,42 @@ public class Persona {
         return celular;
     }
 
+    public void getBateriaCelular() {
+        try {
+            System.out.println("Batería: " + celular.getBateria() + " puntos.");
+        } catch (NullPointerException e) {
+            System.out.println("No se puede obtener el estado de la batería. " + this.nombre + " no tiene celular.");
+        }
+    }
+
+    public void getEstadoCelular() {
+        try {
+            if(celular.isEncendido()) {
+                System.out.println("El celular de " + this.nombre + " está encendido.");
+            } else {
+                System.out.println("El celular de " + this.nombre + " está apagado.");
+            }
+        } catch (NullPointerException e) {
+            System.out.println("No se puede obtener el estado del celular. " +this.nombre + " no tiene celular.");
+        }
+    }
+
+    public void encenderCelular() {
+        try {
+            celular.encender();
+        } catch (NullPointerException e) {
+            System.out.println(this.nombre + " no tiene celular.");
+        }
+    }
+
+    public void apagarCelular() {
+        try {
+            celular.apagar();
+        } catch (NullPointerException e) {
+            System.out.println(this.nombre + " no tiene celular.");
+        }
+    }
+
     // Setters
     public void setCelular(Celular celular) {
         this.celular = celular;

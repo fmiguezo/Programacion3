@@ -1,0 +1,121 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam Linetype ortho
+title "Diagrama de clases - Mueblería"
+
+class Mueble implements Vendible {
+    - alto : double
+    - largo : double
+    - ancho : double
+    - color : String
+    - precio : double
+
+    + getPrecio();
+}
+
+enum Material {
+    MADERA
+    METAL
+    PLASTICO
+    VIDRIO
+}
+
+enum Tapizado {
+    CUERO
+    TELA
+    ECO_CUERO
+}
+
+enum Forma {
+    RECTANGULAR
+    REDONDA
+    CUADRADA
+}
+
+class Silla extends Mueble {
+    - tieneTapizado : boolean
+    - tapizado : Tapizado
+
+    + getPrecio() : double
+}
+
+class Mesa extends Mueble {
+    - cantidadDePatas : int
+    - material : Material
+    - forma : Forma
+
+    + getPrecio() : double
+}
+
+class Sillon extends Mueble {
+    - tapizado : Tapizado
+
+    + getPrecio() : double
+}
+
+class Combo implements Vendible {
+    - nombre : String
+    - muebles : ArrayList<Mueble>
+    - pctDescuento : double
+
+    + getPrecio() : double
+    + agregarMueble() : void
+    + quitarMueble() : void
+}
+
+note left of Combo::getPrecio
+    public double getPrecio() {
+        double precio = 0;
+        for (Mueble mueble : muebles) {
+           precio += mueble.getPrecio();
+        }
+        return precio * (1 - pctDescuento);
+    }
+end note
+
+interface Vendible {
+    + getPrecio() : double
+}
+
+class Pedido {
+    - items : ArrayList<Vendible>
+
+    + agregarItem() : void
+    + eliminarItem() : void
+    + calcularPrecioTotal() : double
+}
+
+note left of Pedido::calcularPrecioTotal
+    public double calcularPrecioTotal() {
+       double total = 0;
+       for (Vendible item : items) {
+           total += item.getPrecio();
+       }\
+       return total;
+    }
+end note
+
+class Muebleria {
+    - muebles : ArrayList<Mueble>
+    - combos : ArrayList<Combo>
+    - compras : HashMap<Pedido>
+
+    + gestionarPedido() : Pedido
+    + agregarMueble() : void
+    + eliminarMueble() : void
+    + agregarCombo() : void
+    + eliminarCombo() : void
+    + agregarPedido() : void
+    + eliminarPedido() : void
+
+}
+
+' relaciones
+Pedido "1" *-- "1..*" Vendible
+Muebleria "1" o.. "1..*" Mueble
+Muebleria "1" o.. "1..*" Combo
+Muebleria "1" o.. "1..*" Pedido
+Combo "1" *-r- "1..*" Mueble
+
+@enduml

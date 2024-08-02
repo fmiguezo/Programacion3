@@ -1,27 +1,47 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+skinparam Linetype ortho
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
+title "Diagrama de clases - Promedios"
 
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
+class Alumno {
+    - String nombre
+    - String apellido
+    - int edad
+    - String carrera
+    - HashMap<Materia, ArrayList<Double>> materias
 
-class ArrayList {
-Object[] elementData
-size()
+    constructor Alumno(nombre: String, apellido: String, edad: int, carrera: String)
+
+    + getters y setters()
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class Materia {
+    - String nombre
+    - String codigo
+
+    + getters()
 }
+
+class Carrera {
+    - String nombre
+    - String codigo
+    - ArrayList<Materia> materias
+
+    + getters()
+}
+
+class CalculadorNotas {
+    + double calcularPromedio(Materia materia, ArrayList<Double> notas)
+    + double calcularPromedioGeneral(Alumno alumno)
+}
+
+' relaciones
+Alumno <.. Materia : tiene
+Carrera *-- Materia : tiene
+Alumno *-- Carrera : tiene
+CalculadorNotas <.. Materia : usa
+CalculadorNotas <.. Alumno : usa
 
 @enduml

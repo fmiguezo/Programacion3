@@ -1,2 +1,4 @@
-package org.example;public class PiononoGangrenoso {
+package org.example;
+
+public class PiononoGangrenoso extends Postre {
 }

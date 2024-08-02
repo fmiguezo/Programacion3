@@ -1,27 +1,99 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+skinparam Linetype ortho
+title "Ejercicio 29"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+interface FabricaAutos {
+    + fabricarAuto() : Auto;
+    + obtenerAireAcondicionado() : AireAcondicionado;
+    + obtenerReproductor() : Reproductor;
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class FabricaAutosDeportivos implements FabricaAutos {
+    + fabricarAuto() : Auto;
+    + obtenerAireAcondicionado() : AireAcondicionado;
+    + obtenerReproductor() : Reproductor;
 }
 
+note right of FabricaAutosDeportivos::fabricarAuto
+    Auto auto = new AutoDeportivo();
+    auto.setAire(obtenerAireAcondicionado());
+    auto.setRepr(ObtenerReproductor());
+    return auto;
+end note
+
+note right of FabricaAutosDeportivos::obtenerAireAcondicionado
+    return new AireAcondicionadoImportado();
+end note
+
+note right of FabricaAutosDeportivos::obtenerReproductor
+    return new ReproductorImportado();
+end note
+
+class FabricaAutosFamiliar implements FabricaAutos {
+    + fabricarAuto() : Auto;
+    + obtenerAireAcondicionado() : AireAcondicionado;
+    + obtenerReproductor() : Reproductor;;
+}
+
+note right of FabricaAutosFamiliar::fabricarAuto
+    Auto auto = new AutoFamiliar();
+    auto.setAire(obtenerAireAcondicionado());
+    auto.setRepr(ObtenerReproductor());
+    return auto;
+end note
+
+note right of FabricaAutosFamiliar::obtenerAireAcondicionado
+    return new AireAcondicionadoNacional();
+end note
+
+note right of FabricaAutosFamiliar::obtenerReproductor
+    return new ReproductorNacional();
+end note
+
+abstract class Auto {
+    # AireAcondicionado ac;
+    # Reproductor repr;
+}
+
+class AutoDeportivo implements Auto {
+    + getters_y_setters()
+}
+
+class AutoFamiliar implements Auto {
+    + getters_y_setters()
+}
+
+abstract class AireAcondicionado {
+    + activarModoFrio();
+}
+
+class AireAcondicionadoNacional implements AireAcondicionado {
+    + activarModoCalor();
+}
+
+class AireAcondicionadoImportado implements AireAcondicionado {
+}
+
+abstract class Reproductor {
+    + conectarMiniplug();
+}
+
+class ReproductorNacional implements Reproductor {}
+
+class ReproductorImportado implements Reproductor {
+    + conectarBluetooth();
+}
+
+'relaciones
+FabricaAutosFamiliar -[hidden]down- FabricaAutos
+FabricaAutosDeportivos -[hidden]down- FabricaAutos
+Auto <.r. FabricaAutos
+Auto -[hidden]up- AutoDeportivo
+AutoFamiliar -[hidden]down- Auto
+AutoDeportivo <.r. FabricaAutosDeportivos
+AutoFamiliar <.r. FabricaAutosFamiliar
 @enduml
+
+

@@ -1,27 +1,38 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
+skinparam Linetype ortho
+title "Diagrama de clases - Ejercicio 17 Juancito Jaquer"
 
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+enum Material {
+    METAL
+    CUERO
+    MADERA
+    VIDRIO
+    PLASTICO
+    LIQUIDO
+    TEXTIL
+    GOMA
+    OTRO
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+abstract class Objeto {
+    - Material material
+    - double volumen
+    - ArrayList<Objeto> contenido
+
+    + Objeto(String material, double volumen)
+    + abstract void agregarObjeto(Objeto objeto)
+    + ArrayList<Objeto> verContenido()
+    + getters()
 }
+
+class Scanner {
+    + escanear(Objeto objeto)
+}
+
+' relaciones
+Objeto <.. Material
+Scanner o-- Objeto
 
 @enduml

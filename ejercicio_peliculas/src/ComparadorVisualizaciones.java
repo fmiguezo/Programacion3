@@ -11,4 +11,9 @@ public class ComparadorVisualizaciones implements Comparator<Pelicula> {
             return -1;
         }
     }
+
+    @Override
+    public Comparator<Pelicula> reversed() {
+        return Comparator.super.reversed();
+    }
 }

@@ -1,27 +1,93 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+enum TipoItem {
+    COMODA
+    BICICLETA
+    HELADERA
+    LAVARROPAS
+    TELEVISOR
+    CAJA
 }
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+abstract class VehiculoCarga {
+    - ArrayList<ICargable> items;
+    - int capacidadCarga;
+
+    + listarItems();
+    + boolean esTipoValido(TipoItem tipo);
 }
+
+class Camioneta extends VehiculoCarga {
+
+}
+
+class Auto extends VehiculoCarga {
+
+}
+
+interface ICargable {
+    + getTipo();
+}
+
+
+class Comoda implements ICargable {
+    - double superficie;
+    - int cantCajones;
+
+    + getSuperficie();
+    + getCajones();
+}
+
+class Bicicleta implements ICargable {
+    - int tamanioRodado;
+    - boolean esElectrica;
+    - int cantCambios;
+    - boolean esPlegable;
+
+    + getRodado();
+    + getElectrica();
+    + getCambios();
+    + getPlegable();
+}
+
+class Heladera implements ICargable {
+    - int voltaje;
+    - boolean tieneFreezer;
+
+    + getVoltaje();
+    + getFreezer();
+}
+
+class Lavarropas implements ICargable {
+    - int voltaje;
+    - int carga;
+    - int revolucionesCentrifugado;
+
+    + getVoltaje();
+    + getCarga();
+    + getCentrifugado();
+}
+
+class Televisores implements ICargable {
+    - int voltaje;
+    - String tipoPantalla;
+    - boolean esInteligente;
+
+    + getVoltaje();
+    + getPantalla();
+    + getInteligente();
+}
+
+class Caja implements ICargable {
+    - boolean esPequenia;
+}
+
+interface ICargador {
+    + void cargar(Vehiculo Carga, ICargable item);
+}
+
+' relaciones
+VehiculoCarga o.. ICargable
 
 @enduml

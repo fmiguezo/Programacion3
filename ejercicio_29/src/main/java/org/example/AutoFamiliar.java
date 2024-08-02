@@ -1,2 +1,4 @@
-package org.example;public class AutoFamiliar {
+package org.example;
+
+public class AutoFamiliar extends Auto {
 }

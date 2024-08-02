@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public class CostException {
+public class CostException extends Exception{
+    public CostException() {
+        super("El costo debe ser mayor a 0.");
+    }
 }
