@@ -1,0 +1,70 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam Linetype ortho
+title "Ejercicio 30"
+
+class PasteleroDelHorror {
+    - receta : PostreBuilder
+
+    + PasteleroDelHorror(builder : PostreBuilder)
+    + cambiarReceta(builder : PostreBuilder)
+}
+
+note top of PasteleroDelHorror
+    PasteleroDelHorror es el Director del Builder
+    que define el orden de los pasos para construir un postre.
+end note
+
+interface PostreBuilder {
+    + reset()
+    + agregarIngrediente1()
+    + agregarIngrediente2()
+    + agregarIngrediente3()
+}
+
+note top of PostreBuilder
+    Postre es una interfaz de un Builder que define
+    los métodos necesarios para     preparar un postre.
+end note
+
+class TortaDeLaMuerteBuilder implements PostreBuilder {
+    - postre : TortaDeLaMuerte
+    + reset()
+    + agregarIngrediente1()
+    + agregarIngrediente2()
+    + agregarIngrediente3()
+    + getPostre() : TortaDeLaMuerte
+}
+
+class BudinDiabolicoBuilder implements PostreBuilder {
+    - postre : BudinDiabolico
+    + reset()
+    + agregarIngrediente1()
+    + agregarIngrediente2()
+    + agregarIngrediente3()
+    + getPostre() : BudinDiabolico
+}
+
+class PiononoGangrenosoBuilders implements PostreBuilder {
+    - postre : PiononoGangrenoso
+    + reset()
+    + agregarIngrediente1()
+    + agregarIngrediente2()
+    + agregarIngrediente3()
+    + getPostre() : PiononoGangrenoso
+}
+
+class TortaDeLaMuerte {}
+
+class BudinDiabolico {}
+
+class PiononoGangrenoso {}
+
+' relaciones
+
+TortaDeLaMuerteBuilder --> TortaDeLaMuerte
+BudinDiabolicoBuilder --> BudinDiabolico
+PiononoGangrenosoBuilders --> PiononoGangrenoso
+PasteleroDelHorror -l-> PostreBuilder
+@enduml
